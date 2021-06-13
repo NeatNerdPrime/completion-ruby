@@ -1,0 +1,38 @@
+name: completion-rails CI
+
+on:
+  push:
+    # paths:
+    # - completion-rails
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        path: ${{ github.workspace }}/completion-ruby
+    - uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: 2.7
+    - run: bundle config --global path vendor/bundle
+    - run: gem install rails
+
+    - name: Cache `rails new`
+      id: rails-new-cache
+      uses: actions/cache@v2
+      with:
+        path: testapp
+        key: ${{ runner.os }}-rails-new-testapp
+    - run: |
+        rails new testapp \
+          --skip-git --skip-keeps \
+          --skip-action-cable --skip-action-mailer --skip-active-storage \
+          --skip-action-text --skip-javascript --skip-sprockets --skip-turbolinks \
+          --skip-puma
+      if: steps.rails-new-cache.outputs.cache-hit != 'true'
+
+    - run: ${{ github.workspace }}/completion-ruby/test/completion-rails/test
+      env:
+        COMPLETION_RAILS_SCRIPT: ${{ github.workspace }}/completion-ruby/completion-rails
+        RAILS_TEST_APP_DIR: ${{ github.workspace }}/testapp

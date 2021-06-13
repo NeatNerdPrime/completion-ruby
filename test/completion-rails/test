@@ -1,0 +1,55 @@
+#! /bin/bash
+set -e
+
+source "$COMPLETION_RAILS_SCRIPT"
+
+test-completion() {
+    print-array 'RUNNING TEST:    ' "$@"
+    _COMPLETION_TEST=($@)
+    COMP_WORDS=($@)
+    COMP_CWORD=$#
+    __rails rails "${@: -1}" "${@: -2:1}"
+}
+
+expect() {
+    print-array 'EXPECTED RESULT: ' "$@"
+    local word
+    for word in "$@"; do
+        if ! [[ " ${COMPREPLY[@]} " =~ " $word " ]]; then
+            echo 'Completion failed:'
+            print-array 'Command:  ' "${_COMPLETION_TEST[@]}"
+            print-array 'Output:   ' "${COMPREPLY[@]}"
+            echo "Missing: $(printf "%q" "$word")"
+            exit 1
+        fi >&2
+    done
+    echo
+}
+
+print-array() {
+    echo -n "$1"
+    while [[ $# -gt 1 ]]; do
+        shift
+        printf ' %q' "$1"
+    done
+    echo
+}
+
+
+
+(
+    test-completion rails ''
+    expect new
+)
+
+cd "$RAILS_TEST_APP_DIR"
+
+(
+    test-completion rails ''
+    expect generate g console c server s dbconsole db
+)
+
+(
+    test-completion rails g ''
+    expect controller generator helper model
+)
