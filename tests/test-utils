@@ -86,6 +86,6 @@ print-binary-versions() {
     echo 'Versions:'
     local bin
     for bin in "${_TEST_BINARIES[@]}"; do
-        "$bin" --version || echo "`$bin --version` failed with status $?" >&2
+        "$bin" --version || echo "\`$bin --version\` failed with status $?" >&2
     done
 }
