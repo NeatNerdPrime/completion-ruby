@@ -54,9 +54,10 @@ __bundle() {
         show)
             options="$options --outdated --paths --no-paths";;
         update)
-            options="$options --bundler --conservative --force --full-index
-                     --group --jobs --local --major --minor --patch --quiet
-                     --ruby --source --strict";;
+            options="$options --all --bundler --conservative --force
+                     --full-index --gemfile --group --jobs --local
+                     --major --minor --patch --pre --quiet --redownload
+                     --retry --ruby --source --strict --quiet";;
         viz)
             options="$options -f -F -R -v -W --file --format --requirements
                      --no-requirements --version --no-version --without";;
