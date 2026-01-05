@@ -7,7 +7,7 @@ bash-completion:
     SAVE ARTIFACT ./bash_completion
 
 ruby:
-    ARG RUBY_VERSION=3.4
+    ARG RUBY_VERSION=4.0
     FROM ruby:$RUBY_VERSION
 
     COPY +bash-completion/bash_completion /usr/src/bash_completion
@@ -16,7 +16,7 @@ ruby:
 rails-app:
     FROM +ruby
 
-    ARG RAILS_VERSION="~>7.0"
+    ARG RAILS_VERSION="~>8.0"
     RUN gem update --system
     RUN gem install rails --version "$RAILS_VERSION"
 
@@ -59,6 +59,7 @@ test-bundle-all:
     BUILD +test-bundle --RUBY_VERSION=3.2 --RAILS_VERSION="~>8.0"
     BUILD +test-bundle --RUBY_VERSION=3.3 --RAILS_VERSION="~>8.0"
     BUILD +test-bundle --RUBY_VERSION=3.4 --RAILS_VERSION="~>8.0"
+    BUILD +test-bundle --RUBY_VERSION=4.0 --RAILS_VERSION="~>8.0"
 
 
 test-gem:
@@ -83,6 +84,7 @@ test-gem-all:
     BUILD +test-gem --RUBY_VERSION=3.2
     BUILD +test-gem --RUBY_VERSION=3.3
     BUILD +test-gem --RUBY_VERSION=3.4
+    BUILD +test-gem --RUBY_VERSION=4.0
 
 
 test-jruby:
@@ -118,6 +120,7 @@ test-rails-all:
     BUILD +test-rails --RUBY_VERSION=3.2 --RAILS_VERSION="~>8.0"
     BUILD +test-rails --RUBY_VERSION=3.3 --RAILS_VERSION="~>8.0"
     BUILD +test-rails --RUBY_VERSION=3.4 --RAILS_VERSION="~>8.0"
+    BUILD +test-rails --RUBY_VERSION=4.0 --RAILS_VERSION="~>8.0"
 
 
 test-rake:
@@ -134,6 +137,7 @@ test-rake-all:
     BUILD +test-rake --RUBY_VERSION=3.2 --RAILS_VERSION="~>8.0"
     BUILD +test-rake --RUBY_VERSION=3.3 --RAILS_VERSION="~>8.0"
     BUILD +test-rake --RUBY_VERSION=3.4 --RAILS_VERSION="~>8.0"
+    BUILD +test-rake --RUBY_VERSION=4.0 --RAILS_VERSION="~>8.0"
 
 
 test-ruby:
@@ -158,3 +162,4 @@ test-ruby-all:
     BUILD +test-ruby --RUBY_VERSION=3.2
     BUILD +test-ruby --RUBY_VERSION=3.3
     BUILD +test-ruby --RUBY_VERSION=3.4
+    BUILD +test-ruby --RUBY_VERSION=4.0
