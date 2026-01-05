@@ -40,9 +40,10 @@ __bundle() {
             options="$options --gemspec";;
         install)
             options="$options --binstubs --clean --deployment --force --frozen
-                     --full-index --gemfile --jobs --local --no-cache
-                     --no-prune --path --quiet --retry --shebang --standalone
-                     --system --trust-policy --with --without";;
+                     --full-index --gemfile --jobs --local --lockfile --no-cache
+                     --no-lock --no-prune --path --prefer-local --quiet
+                     --redownload --retry --shebang --standalone --system
+                     --target-rbconfig --trust-policy --with --without";;
         lock)
             options="$options --add-platform --conservative --full-index
                      --local --lockfile --major --minor --patch --print
@@ -82,6 +83,9 @@ __bundle() {
             case $prev in
             --binstubs | --path)
                 _filedir -d
+                return;;
+            --lockfile | --target-rbconfig)
+                _filedir
                 return;;
             --standalone | --with | --without)
                 __bundle_complete_groups
